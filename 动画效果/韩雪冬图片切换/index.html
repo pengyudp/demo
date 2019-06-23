@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>韩雪冬网站效果 - 妙味课堂 - www.miaov.com</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<div id="automatic">
+
+	<div class="prev_div"></div>
+    <a class="prev" href="###">
+        <span class="ico1"></span>
+        <span class="ico"></span>
+        <span class="txt"></span>
+    </a>
+	
+	<div class="next_div"></div>
+    <a class="next" href="###">
+        <span class="ico1"></span>
+        <span class="ico"></span>
+        <span class="txt"></span>
+    </a>
+
+	<div class="line"></div>
+
+    <ul>
+        <li class="pos_0"><a href="http://www.miaov.com"><img src="images/8.jpg" width="100" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_1"><a href="http://www.miaov.com"><img src="images/1.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_2"><a href="http://www.miaov.com"><img src="images/2.jpg" width="510" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_3"><a href="http://www.miaov.com"><img src="images/3.jpg" width="680" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_4"><a href="http://www.miaov.com"><img src="images/4.jpg" width="510" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_5"><a href="http://www.miaov.com"><img src="images/5.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_6"><a href="http://www.miaov.com"><img src="images/6.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+        <li class="pos_6"><a href="http://www.miaov.com"><img src="images/7.jpg" width="270" alt="妙味课堂 www.miaov.com" longdesc="http://www.miaov.com" /></a></li>
+    </ul>
+
+</div>
+<p id="footer"><a href="http://www.miaov.com">妙味课堂 - www.miaov.com</a></p>
+<script src="../js/mTween.js"></script>
+<script>
+
+    var lis = Array.from(document.querySelectorAll("li"));
+    var prev = document.querySelector(".prev_div");
+    var next = document.querySelector(".next_div");
+    var line = document.querySelector(".line");
+    var styles = [];
+
+    lis.forEach(item => {
+        var img = item.querySelector("img");
+        styles.push({
+            li:{
+                "top":mTween.css(item , "top"),
+                "left":mTween.css(item , "left"),
+                "z-index":mTween.css(item , "z-index"),
+                "opacity":mTween.css(item , "opacity")
+            },
+            img:{
+                "width":mTween.css(img , "width")
+            }
+        })
+    });
+
+    next.addEventListener("click" , function(){
+        var item = styles.pop();
+        styles.unshift(item);
+        tab();
+    });
+
+    prev.addEventListener("click" , function(){
+        var item = styles.shift();
+        styles.push(item);
+        tab();
+    });
+
+    function tab(){
+        mTween.move({
+            el:line,
+            attrs:{
+                'opacity':0
+            },
+            time:400
+        });
+        lis.forEach((item , index)=>{
+            mTween.move({
+                el:item,
+                attrs:styles[index].li,
+                time:600
+            });
+            
+            var img = item.querySelector("img");
+            mTween.move({
+                el:img,
+                attrs:styles[index].img,
+                time:600
+            }).then(()=>{
+                mTween.move({
+                    el:line,
+                        attrs:{
+                            'opacity':1
+                        },
+                        time:400
+                });
+            });
+        });
+
+
+    }
+
+</script>
+</body>
+</html>

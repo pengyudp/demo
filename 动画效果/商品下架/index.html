@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="css/index.css" rel="stylesheet" />
+</head>
+
+<body>
+    <h1 id="logo">
+        <img src="img/miaov.png" />
+    </h1>
+    <div class="wrap">
+        <ul class="shopList">
+            <li>
+                <header>
+                    <input type="datetime-local" class="datetime" />
+                    <a class="btn">确定</a>
+                </header>
+                <p class="remainingTime">
+                    剩余<time><span>0</span><span>0</span>:<span>0</span><span>0</span>:<span>0</span><span>0</span></time>
+                </p>
+                <div class="shop-img">
+                    <img src="img/shop0.jpg" />
+                </div>
+                <h2 class="shop-title">Apple iPhone 7 Plus 64g</h2>
+                <p class="shop-price">抢购价：<span>￥5799</span></p>
+                <div class="over"></div>
+            </li>
+            <li>
+                <header>
+                    <input type="datetime-local" class="datetime" />
+                    <a class="btn">确定</a>
+                </header>
+                <p class="remainingTime">
+                    剩余<time><span>0</span><span>0</span>:<span>0</span><span>0</span>:<span>0</span><span>0</span></time>
+                </p>
+                <div class="shop-img">
+                    <img src="img/shop1.jpg" />
+                </div>
+                <h2 class="shop-title">27 英寸配备 Retina 5K显示屏</h2>
+                <p class="shop-price">抢购价：<span>￥15999</span></p>
+                <div class="over"></div>
+            </li>
+            <li>
+                <header>
+                    <input type="datetime-local" class="datetime" />
+                    <a class="btn">确定</a>
+                </header>
+                <p class="remainingTime">
+                    剩余<time><span>0</span><span>0</span>:<span>0</span><span>0</span>:<span>0</span><span>0</span></time>
+                </p>
+                <div class="shop-img">
+                    <img src="img/shop2.jpg" />
+                </div>
+                <h2 class="shop-title">iPad mini 4</h2>
+                <p class="shop-price">抢购价：<span>￥1799</span></p>
+                <div class="over"></div>
+            </li>
+            <li>
+                <header>
+                    <input type="datetime-local" class="datetime" />
+                    <a class="btn">确定</a>
+                </header>
+                <p class="remainingTime">
+                    剩余<time><span>0</span><span>0</span>:<span>0</span><span>0</span>:<span>0</span><span>0</span></time>
+                </p>
+                <div class="shop-img">
+                    <img src="img/shop3.jpg" />
+                </div>
+                <h2 class="shop-title">Apple Watch</h2>
+                <p class="shop-price">抢购价：<span>￥3799</span></p>
+                <div class="over"></div>
+            </li>
+        </ul>
+        <section class="overList">
+            <header>
+                <h3>商品名称</h3>
+                <h3>价格</h3>
+            </header>
+            <ul class="list">
+                <!-- <li>
+                <p>Apple iPhone 7 Plus 64g </p>
+                <p>¥5799</p>
+                <div class="shop-img">
+                    <img src="img/shop0.jpg" />
+                </div>
+            </li>
+             -->
+            </ul>
+        </section>
+    </div>
+    <script src="../js/mTween.js"></script>
+    <script>
+        /*
+            1. 布局
+            2. 设置默认到期时间
+            3. 倒计时
+            4. 修改到期时间
+            5. 到期之后，下架动画
+                1. 显示遮罩
+                2. 抖动
+                3. 下落消失
+                4. 生成内容
+        */
+
+        // 设置默认到期时间
+        (function () {
+            var ul = document.querySelector('.shopList');
+            var lis = ul.querySelectorAll("li");
+
+            lis.forEach(li => {
+                showTime(li);
+            });
+
+            //展示时间
+            function showTime(li) {
+                var inputTime = li.querySelector(".datetime");
+                var btn = li.querySelector(".btn");
+                var target = getTargetTime();
+                inputTime.value = setDefalutTime(target);
+                remainingTime(li, target);
+                btn.addEventListener("click", function () {
+                    var iValue = inputTime.value;
+                    var dAndT = iValue.split("T");
+                    var d = dAndT[0].split("-");
+                    var t = dAndT[1].split(":");
+                    remainingTime(li, new Date(d[0], d[1] - 1, d[2], t[0], t[1], 0, 0));
+                }, false);
+            }
+
+            //设置剩余时间
+            function remainingTime(li, target) {
+                clearInterval(li.timer);
+                li.timer = setInterval(function () {
+                    var nowTime = Date.now();
+                    var targetTime = target.getTime();
+                    var time = li.querySelector("time");
+                    if (targetTime > nowTime) {
+                        var remaining = (targetTime - nowTime) / 1000;
+                        var hour = parseInt(remaining / 3600);
+                        var minutes = parseInt(remaining % 3600 / 60);
+                        var seconds = parseInt(remaining % 60);
+                        time.innerHTML = '<span>' + ft(hour) + "</span>:<span>" + ft(minutes) + "</span>:<span>" + ft(seconds) + "</span>"
+                    } else {
+                        clearInterval(li.timer);
+                        time.innerHTML = '<span>' + ft(0) + "</span>:<span>" + ft(0) + "</span>:<span>" + ft(0) + "</span>"
+                        lowerShelf(li);
+                    }
+                }, 1000);
+
+            }
+
+            //下架动画
+            function lowerShelf(li) {
+                var over = li.querySelector(".over");
+                mTween.css(over, "opacity", .1);
+                mTween.css(over, "scale", 1.5);
+                mTween.css(over, 'display', 'block');
+                (async function () {
+                    await mTween.move({
+                        el: over,
+                        attrs: {
+                            "opacity": 1,
+                            "scale": 1
+                        },
+                        time: 300,
+                    });
+
+                    await mTween.shake({
+                        el: li,
+                        attrs: 'left',
+                        num: 10,
+                    });
+
+                    await mTween.move({
+                        el: li,
+                        attrs: {
+                            "translateY": 400,
+                            "opacity": 0
+                        },
+                        time: 400,
+                    });
+
+                    createLi(li)
+                })()
+            }
+
+            //创建li
+            function createLi(li) {
+                var list = document.querySelector(".list");
+                var name = li.querySelector(".shop-title").innerHTML;
+                var price = li.querySelector(".shop-price span").innerHTML;
+                var img = li.querySelector(".shop-img").innerHTML;
+                list.innerHTML += `<li>
+                <p>${name}</p>
+                <p>${price}</p>
+                <div class="shop-img">
+                    ${img}
+                </div>
+            </li>`;
+            }
+
+            //格式化时间
+            function ft(t) {
+                return fd(t).split("").join("</span><span>");
+            }
+
+            //输出datetime-local的时间格式
+            function setDefalutTime(d) {
+                var year = d.getFullYear();
+                var month = fd(d.getMonth() + 1);
+                var date = fd(d.getDate());
+                var hour = fd(d.getHours());
+                var minutes = fd(d.getMinutes());
+                return year + "-" + month + "-" + date + "T" + hour + ":" + minutes;
+            }
+
+            //获取目标时间
+            function getTargetTime() {
+                var minutes = Math.round(Math.random() * 10);
+                var d = new Date(Date.now() + minutes * 60000);
+                return new Date(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), 0, 0);
+            }
+
+
+
+            function fd(t) {
+                return t > 9 ? String(t) : "0" + t;
+            }
+
+        })();
+    </script>
+</body>
+
+</html>

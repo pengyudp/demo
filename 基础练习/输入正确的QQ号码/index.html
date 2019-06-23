@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/index.css" />
+</head>
+
+<body>
+  <div class="box">
+    <input type="text" />
+    <input type="button" value="验证" />
+    <div class="validate">
+      <div class="arrow"><em></em><span></span></div>
+      <div class="text">请输入5-10位数字</div>
+    </div>
+  </div>
+
+  <script>
+    var inputs = document.querySelectorAll("input");
+    var validate = document.querySelector('.validate');
+    var text = document.querySelector('.text');
+
+    inputs[1].onclick = function () {
+      var val = inputs[0].value;
+      if(val === ''){
+        text.innerHTML = "qq号码不能为空";
+      }else if(isNaN(val) || val.length < 5 || val.length > 10){
+        text.innerHTML = "请输入5-10位的数字";
+      }else if(val.charAt(0) === '0'){
+        text.innerHTML = "首字母不能是0";
+      }else if(val != String(parseInt(val))){
+        text.innerHTML = "请不要输入小数";
+      }else{
+        text.innerHTML = "验证成功";
+        setTimeout(function(){validate.style.display = "none";},1000)
+      }
+      validate.style.display = "block";
+    }
+  </script>
+</body>
+
+</html>

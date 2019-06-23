@@ -1,0 +1,86 @@
+<!DOCTYPE html >
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link rel="stylesheet" href="./index.css">
+
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="nav">
+            <a href="javascript:;">从小到大</a>
+            <a href="javascript:;">打乱顺序</a>
+        </div>
+        <ul>
+            <li><img src="images/8.png" alt="">
+                <p>8-指尖社区</p>
+            </li>
+            <li><img src="images/1.png" alt="">
+                <p>1-温馨办公</p>
+            </li>
+            <li><img src="images/2.png" alt="">
+                <p>2-游戏桌面</p>
+            </li>
+            <li><img src="images/3.png" alt="">
+                <p>3-汽车摇滚</p>
+            </li>
+            <li><img src="images/4.png" alt="">
+                <p>4-狭路相逢</p>
+            </li>
+            <li><img src="images/5.png" alt="">
+                <p>5-棒球小子</p>
+            </li>
+            <li><img src="images/6.png" alt="">
+                <p>6-球鞋动力</p>
+            </li>
+            <li><img src="images/7.png" alt="">
+                <p>7-游戏官网</p>
+            </li>
+            
+        </ul>
+    </div>
+    <script type="text/javascript">
+        var a = document.querySelector(".nav").querySelectorAll("a");
+        var lis = Array.from(document.querySelectorAll("li"));
+        var ul = document.querySelector("ul");
+
+        a[0].onclick = function(){
+            if(this.onOff){
+                this.innerHTML = "从小到大";
+                sortArr(2)
+            }else{
+                this.innerHTML = "从大到小";
+                sortArr(1)
+            }
+            this.onOff = !this.onOff;
+        }
+
+        a[1].onclick = function(){
+            sortArr(3)
+        }
+
+        function sortArr(type){
+            lis.sort(function(a , b){
+                var ap = a.querySelector("p").innerHTML.charAt(0);
+                var bp = b.querySelector("p").innerHTML.charAt(0);
+                switch(type){
+                    case 1 :
+                        return ap - bp;
+                    case 2 :
+                        return bp - ap;
+                    case 3 :
+                        return Math.random() - 0.5;
+                }
+            });
+
+            lis.forEach(item=>{
+               ul.append(item); 
+            });
+        }
+    </script>
+</body>
+
+</html>

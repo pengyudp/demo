@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>无限极菜单</title>
+    <style>
+        body {
+            margin: 0;
+            background: url(./img/bg.png);
+            min-height: 100vh;
+            text-indent: 10px;
+        }
+        ul span{
+            text-indent: 0;
+        }
+
+        h1 {
+            margin: 40px auto;
+            background: url(./img/logo.png);
+            width: 208px;
+            height: 56px;
+            text-indent: -9999px;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0 0 0 100px;
+            list-style: none;
+            /* display: none; */
+        }
+
+        .list-wrap>ul {
+            display: block;
+        }
+
+
+        li {
+            line-height: 30px;
+            cursor: pointer;
+            border-left: 1px dotted #e15671;
+            position: relative;
+        }
+        .last{
+            border-left:none;
+        }
+        span {
+            padding: 0 10px;
+            margin-left: -15px;
+            color: #e15671;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        h4{
+            font-weight: normal;
+            margin: 0;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <h1>miaov</h1>
+    <div class="list-wrap">
+        
+    </div>
+    <script src="./data.js"></script>
+</body>
+
+</html>

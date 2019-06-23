@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>擦出图片</title>
+    <style>
+        body{
+            margin: 0;
+            background-color: rgb(211, 241, 213);
+        }
+        .wrap{
+            position: relative;
+            width: 590px;
+            margin: 100px auto;
+        }
+        .wrap div{
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            /* background: url('./img/img.jpg'); */
+            background-color: rgb(98, 133, 95);
+            background-size: 1000% 1000%;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div></div>
+    </div>
+    <script>
+        var wrap = document.querySelector(".wrap");
+        var divs = "";
+        
+        for(let i =0;i < 10;i++){
+            for(let j = 0;j < 10;j++){
+                divs+=`<div style='left:${j*10+j*50}px;top:${i*10+i*50}px'></div>`;
+            }
+            
+        }
+
+        wrap.innerHTML = divs;
+
+        var divObjs = document.querySelectorAll(".wrap div");
+        divObjs.forEach(function(obj , index){
+            obj.onmouseover=ca.bind(this,obj , index)
+        });
+
+        function ca(obj , index){
+            var yn = index%10;
+            var n = Math.floor(index/10);
+            var x = -(yn*50);
+            var y = -(n*50);
+            obj.style.background = 'url("./img/img.jpg")';
+            obj.style['background-position']=x+"px "+y+"px";
+        }
+    </script>
+</body>
+</html>

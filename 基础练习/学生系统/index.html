@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div class="wrap">
+        <div id="form">
+            <p>姓名<input id="username" type="text" value="miaov" /></p>
+            <p>年龄<input id="age" type="text" value="11" /></p>
+            <p>性别
+                <select id="gender">
+                    <option>男</option>
+                    <option>女</option>
+                    <option>你猜</option>
+                </select>
+            </p>
+            <p><input type="button" value="添加" id="addBtn" /></p>
+        </div>
+        <table id="table">
+            <thead>
+                <tr>
+                    <th>
+                        <label>
+                        <input type="checkbox" id="checkAll" />
+                        全选
+                    </label>
+                    </th>
+                    <th>
+                        id
+                    </th>
+                    <th>姓名</th>
+                    <th>年龄</th>
+                    <th>性别</th>
+                    <th>操作</th>
+                    <th><a href="javascript:;" id="removeChecked">删除</a></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <!-- <tbody>
+                    <tr>
+                        <th>1</th>
+                    </tr>
+                    <tr>
+                            <th>1</th>
+                        </tr>
+                </tbody> -->
+        </table>
+    </div>
+
+<script>
+{
+    function Guanli(){
+        this.username= document.querySelector("#username");
+        this.age = document.querySelector("#age");
+        this.gender = document.querySelector("#gender");
+        this.addBtn = document.querySelector("#addBtn");
+        this.table = document.querySelector("#table");
+        this.checkAll = document.querySelector("#checkAll");
+        this.removeChecked = document.querySelector("#removeChecked");
+        this.tbody = this.table.tBodies[0];
+        this.num = 1;
+    }
+
+    Guanli.prototype.init = function(){
+        let _this = this;
+        this.add();
+
+        this.checkAll.onclick = function(){
+            let checkboxs = _this.table.querySelectorAll('input[type="checkbox"]');
+            checkboxs.forEach(element => {
+                element.checked = this.checked;
+            });
+        }
+
+        this.removeChecked.onclick = ()=>{
+            let checkboxs = this.tbody.querySelectorAll('input[type="checkbox"]');
+            checkboxs.forEach(element=>{
+                if(element.checked){
+                    let tr = element.parentNode.parentNode;
+                    tr.remove();
+                }
+            });
+        }
+
+    }
+
+    Guanli.prototype.add = function(){
+        this.addBtn.onclick = ()=>{
+            this.createRow();
+        }
+    }
+
+    Guanli.prototype.isCheckedAll = function(){
+        let checkboxs = this.tbody.querySelectorAll('input[type="checkbox"]');
+        this.checkAll.checked = [...checkboxs].every(element=>{
+            return element.checked;
+        });
+    }
+
+    Guanli.prototype.createRow = function(){
+        let vName = this.username.value;
+        let vAge = this.age.value;
+        let vGender = this.gender.value;
+        let _this = this;
+
+        let tr = document.createElement("tr");
+
+        let td1 = document.createElement("td"); 
+        let input = document.createElement("input");
+        input.setAttribute("type","checkbox");
+        input.onclick = ()=>{
+            this.isCheckedAll();
+        };
+        td1.append(input);
+        tr.append(td1);
+
+        let td2 = document.createElement("td"); 
+        td2.innerHTML = this.num;
+        tr.append(td2);
+        
+        let td3 = document.createElement("td"); 
+        td3.innerHTML = vName;
+        tr.append(td3);
+
+        let td4 = document.createElement("td"); 
+        td4.innerHTML = vAge;
+        tr.append(td4);
+        
+        let td5 = document.createElement("td"); 
+        td5.innerHTML = vGender;
+        tr.append(td5);
+
+        let td6 = document.createElement("td"); 
+        let a1 = document.createElement("a");
+        a1.href = "javascript:;";
+        a1.onclick = function(){
+            let p = this.parentNode.parentNode;
+            let prev = p.previousElementSibling;
+            if(prev){_this.tbody.insertBefore(p , prev);}
+        };
+        let a2 = document.createElement("a");
+        a2.onclick = function(){
+            let p = this.parentNode.parentNode;
+            let next = p.nextElementSibling;
+            if(next){_this.tbody.insertBefore(next , p);}
+        };
+        a2.href = "javascript:;";
+        a1.innerHTML = "↑";
+        a2.innerHTML = "↓";
+        td6.append(a1);
+        td6.append(a2);
+        tr.append(td6);
+
+        let td7 = document.createElement("td"); 
+        let a3 = document.createElement("a");
+        a3.href = "javascript:;";
+        a3.innerHTML = "删除";
+        a3.onclick = function(){
+            var parent = this.parentNode.parentNode;
+            parent.remove();
+            _this.isCheckedAll();
+        };
+        td7.append(a3);
+        tr.append(td7);
+
+        this.num++;
+        this.tbody.append(tr);
+    }
+
+    let guanli = new Guanli();
+    guanli.init();
+}
+</script>
+</body>
+
+</html>

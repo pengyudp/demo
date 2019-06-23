@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3D炫酷幻灯效果</title>
+    <script src="../js/mTween.js"></script>
+    <style id="style">
+        body {
+            margin: 0;
+        }
+
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: url(img/bg.jpg) no-repeat center center;
+            background-size: cover;
+            height: 100%;
+        }
+
+        .view {
+            width: 1000px;
+            margin: 150px auto;
+            height: 600px;
+            perspective: 800px;
+        }
+
+        .bigbox {
+            height: 600px;
+            position: relative;
+            transform-style: preserve-3d;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform-style: preserve-3d;
+            transform-origin: center center -100px;
+        }
+
+        .box span {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #fff;
+            opacity: 0;
+        }
+
+        .box span:nth-of-type(1) {
+            transform: translateZ(-100px) rotateY(0deg) translateZ(100px);
+        }
+
+        .box span:nth-of-type(2) {
+            transform: translateZ(-100px) rotateY(90deg) translateZ(100px);
+        }
+
+        .box span:nth-of-type(3) {
+            transform: translateZ(-100px) rotateY(180deg) translateZ(100px);
+        }
+
+        .box span:nth-of-type(4) {
+            transform: translateZ(-100px) rotateY(270deg) translateZ(100px);
+        }
+
+        .box span:nth-of-type(5) {
+            transform: translateZ(-100px) rotateX(90deg) translateZ(100px);
+        }
+
+        .box span:nth-of-type(6) {
+            transform: translateZ(-100px) rotateX(-90deg) translateZ(100px);
+        }
+
+        .boxZ0 span:nth-of-type(1) {
+            background-image: url('./img/A-002.png');
+        }
+
+        .boxZ1 span:nth-of-type(1) {
+            background-image: url('./img/B-002.png');
+        }
+
+        .boxZ2 span:nth-of-type(1) {
+            background-image: url('./img/001.jpg');
+        }
+
+        .boxZ2 span:nth-of-type(2) {
+            background-image: url('./img/002.jpg');
+        }
+
+        .boxZ2 span:nth-of-type(3) {
+            background-image: url('./img/003.jpg');
+        }
+
+        .boxZ2 span:nth-of-type(4) {
+            background-image: url('./img/004.jpg');
+        }
+
+        .boxZ2 span {
+            background-size: 1000px 600px;
+        }
+
+
+        .btns {
+            outline: none;
+            cursor: pointer;
+            width: 100px;
+            height: 100px;
+            background: url(img/button-001.png);
+            border: none;
+            position: absolute;
+            background-size: 100%;
+            bottom: -140px;
+            opacity: 0;
+            transition: 1s;
+        }
+
+        .rightBtn {
+            right: 300px;
+        }
+
+        .leftBtn {
+            left: 300px;
+            transform: scale(-1);
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="view">
+        <div class="bigbox"></div>
+        <input type="button" name="" class="btns leftBtn" value="">
+        <input type="button" name="" class="btns rightBtn" value="">
+    </div>
+    <script>
+        (function () {
+            var bigbox = document.querySelector(".bigbox");
+            var btns = document.querySelectorAll(".btns");
+            var off = true;
+            var maxDelay = 0;
+            var aTypes = [aType1, aType2, aType3];
+            var typeIndex = 0;
+            var timer = null;
+
+            createBox(200, 200, 200)
+            function createBox(w, h, z) {
+                var bw = mTween.css(bigbox, "width");
+                var bh = mTween.css(bigbox, "height");
+                var cell = Math.ceil(bw / w);
+                var row = Math.ceil(bh / h);
+                var inner = "";
+                for (var i = 0; i < cell * row * 3; i++) {
+                    inner += `<div class="box"><span></span><span></span><span></span><span></span><span></span><span></span></div>`;
+                }
+                bigbox.innerHTML = inner;
+                var box = bigbox.querySelectorAll(".box");
+                box.forEach((item, index) => {
+                    item.z = Math.floor(index / (cell * row));
+                    item.x = index % cell;
+                    item.y = Math.floor(index % (cell * row) / cell);
+                    var centerX = Math.floor(cell / 2);
+                    var centerY = Math.floor(row / 2);
+                    switch (item.z) {
+                        case 0:
+                            item.classList.add("boxZ0");
+                            break;
+                        case 1:
+                            item.classList.add("boxZ1");
+                            break;
+                        case 2:
+                            item.classList.add("boxZ2");
+                            var span = item.querySelectorAll("span");
+                            span.forEach(s => {
+                                mTween.css(s, "background-position", "-" + item.x * w + "px -" + item.y * h + "px");
+                            });
+                            break;
+                    }
+                    mTween.css(item, "top", item.y * h);
+                    mTween.css(item, "left", item.x * w);
+                    mTween.css(item, "translateX", (item.x - centerX) * 100 * (item.z + 1));
+                    mTween.css(item, "translateY", (item.y - centerY) * 100 * (item.z + 1));
+                    mTween.css(item, "translateZ", item.z * z + 100);
+                });
+                openingAnimation(z);
+            };
+
+            function openingAnimation(z) {
+                var box = bigbox.querySelectorAll(".box");
+                var times = 3600;
+                box.forEach(item => {
+                    var delay = item.z * 800 + Math.round(Math.random() * 500);
+                    var spans = item.querySelectorAll("span");
+                    setTimeout(function () {
+                        spans.forEach(s => {
+                            mTween.move({
+                                el: s,
+                                attrs: {
+                                    opacity: 1
+                                },
+                                time: 800,
+                                type: 'linear'
+                            })
+                        });
+                        mTween.move({
+                            el: item,
+                            attrs: {
+                                translateX: 0,
+                                translateY: 0,
+                                translateZ: (item.z - 3 + 1) * z
+                            },
+                            time: times - delay,
+                            type: 'linear'
+                        })
+                    }, delay);
+                });
+                setTimeout(function () {
+                    btns.forEach(item => {
+                        mTween.css(item, 'opacity', 1);
+                    })
+                    //autoNext(1);
+                }, times);
+            }
+
+            btns[0].onclick = function () {
+                tab(-1)
+            }
+
+            btns[1].onclick = function () {
+                tab(1)
+            }
+
+            function tab(num) {
+                if (!off) return;
+                off = !off;
+                clearTimeout(timer);
+                tabView(num);
+            }
+
+            function tabView(num) {
+                var box = bigbox.querySelectorAll(".boxZ2");
+                box.forEach((item, index) => {
+                    aTypes[typeIndex % 3](item, num, index);
+                });
+                typeIndex++;
+            }
+
+            function autoNext(num) {
+                clearTimeout(timer);
+                var timer = setTimeout(() => {
+                    tabView(num);
+                }, 3000);
+            }
+
+            function aType1(box, num) {
+                var deg = num * 90 + mTween.css(box, 'rotateY');
+                var times = 1500;
+                var randomTime = Math.round(Math.random() * 300);
+                setTimeout(function () {
+                    mTween.move({
+                        el: box,
+                        attrs: {
+                            rotateY: deg
+                        },
+                        type: 'backBoth',
+                        time: times - randomTime
+                    });
+                }, randomTime);
+
+
+                setTimeout(function () {
+                    off = !off;
+                    //autoNext(1)
+                }, times);
+            }
+
+            function aType2(box, num) {
+                var deg = num * 90 + mTween.css(box, 'rotateY');
+                var delay = box.x * 60 + box.y * 60;
+                maxDelay = Math.max(delay, maxDelay);
+                setTimeout(function () {
+                    async function animation() {
+                        await mTween.move({
+                            el: box,
+                            attrs: {
+                                translateZ: 100
+                            },
+                            type: 'backBoth',
+                            time: 800
+                        });
+
+                        await mTween.move({
+                            el: box,
+                            attrs: {
+                                rotateY: deg
+                            },
+                            type: 'backBoth',
+                            time: 800,
+                        });
+
+                        await mTween.move({
+                            el: box,
+                            attrs: {
+                                translateZ: 0
+                            },
+                            time: 800,
+                            type: 'backBoth',
+                        });
+                    }
+                    animation();
+                }, delay);
+
+                setTimeout(function () {
+                    off = !off;
+                    //autoNext(1)
+                }, maxDelay + 2400);
+            }
+
+            function aType3(box, num, index) {
+                var deg = num * 90 + mTween.css(box, 'rotateY');
+                var zf = index % 2 ? 1 : -1;
+                var times = 2500;
+                var randomTime = Math.round(Math.random() * 300);
+                setTimeout(function () {
+                    (async function () {
+                        await mTween.move({
+                            el: box,
+                            attrs: {
+                                translateZ: 60 * zf
+                            },
+                            type: 'backBoth',
+                            time: 600,
+                        });
+
+                        await mTween.move({
+                            el: box,
+                            attrs: {
+                                rotateY: deg
+                            },
+                            type: 'backBoth',
+                            time: 800,
+                        });
+
+                        await mTween.move({
+                            el: box,
+                            attrs: {
+                                translateZ: 0
+                            },
+                            type: 'backOut',
+                            time: times - 1400 - randomTime
+                        });
+                    })();
+                }, randomTime);
+
+                setTimeout(function () {
+                    off = !off;
+                    //autoNext(1)
+                }, times);
+            }
+        })()
+
+    </script>
+</body>
+
+</html>

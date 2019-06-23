@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="box">
+        <div id="content">
+            目前主要针对的是javascript培训，同时还提供了css教程、javascript视频、js特效等，最新推出了外地学员们喜欢的javascript网络课程服务，同时还为处于javascript入门阶段的朋友录制了大量javascript视频，其中涉及了大量javascript基础知识，希望妙味课堂推出的javascript网络培训课程能带给大家更多惊喜。目前主要针对的是javascript培训，同时还提供了css教程、javascript视频、js特效等，最新推出了外地学员们喜欢的javascript网络课程服务，同时还为处于javascript入门阶段的朋友录制了大量javascript视频，其中涉及了大量javascript基础知识，希望妙味课堂推出的javascript网络培训课程能带给大家更多惊喜。目前主要针对的是javascript培训，
+        </div>
+        <div id="open">
+            <a href="javascript:;">展开</a>
+            <ul style="display: none;">
+                <li><a href="javascript:;">查找</a></li>
+                <li><a href="javascript:;">替换</a></li>
+            </ul>
+        </div>
+        <div id="fun" style="display: none;">
+            <div class="btns">
+                <a href="javascript:;">查找</a>
+                <a href="javascript:;">替换</a>
+            </div>
+
+            <div id="search" style="display: block;">
+                <input type="text" />
+                <input type="button" value="" />
+            </div>
+            <div id="replace">
+                <input type="text" />
+                <input type="text" />
+                <input type="button" value="" />
+            </div>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var open = document.getElementById("open");
+        var ul = open.querySelector("ul");
+        var as = open.querySelectorAll("a");
+        var fun = document.getElementById("fun");
+        var search = document.getElementById("search");
+        var replace = document.getElementById("replace");
+        var btnsA = fun.querySelectorAll("a");
+        var sInput = search.querySelectorAll("input");
+        var rInput = replace.querySelectorAll("input");
+        var content = document.getElementById("content");
+
+        as[0].onclick = function(){
+            ul.style.display = "block";
+        }
+
+        btnsA[0].onclick = as[1].onclick = function(){
+            showAndHide(1);
+        }
+
+        btnsA[1].onclick =  as[2].onclick = function(){
+            showAndHide(2);
+        }
+
+        function showAndHide(flag){
+            fun.style.display = "block";
+            ul.style.display = "none";
+            search.style.display = flag === 1 ? "block" : "none";
+            replace.style.display = flag === 1 ? "none" : "block";
+        }
+
+        sInput[1].onclick=function(){
+            var v = sInput[0].value;
+            var text = content.innerHTML;
+            if(!v){
+                alert("请输入要查找的内容")
+            }else{
+                var arr = text.split(v);
+                if(arr.length === 1){
+                    alert("没有找到查询的内容");
+                }else{
+                    content.innerHTML = arr.join("<span>"+v+"</span>")
+                }
+            }
+        }
+
+        rInput[2].onclick = function(){
+            var v0 = rInput[0].value;
+            var v1 = rInput[1].value;
+            var text = content.innerHTML;
+            if(!v0){
+                alert("请输入要查找替换的内容")
+            }else{
+                var arr = text.split(v0);
+                if(arr.length === 1){
+                    alert("没有找到要替换的内容");
+                }else if(v1){
+                    content.innerHTML = arr.join("")
+                }else if(confirm("是否要将替换内容删除")){
+                    content.innerHTML = arr.join(v1)
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>

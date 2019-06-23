@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body,html{ margin: 0;padding: 0}
+        div{ width: 1rem;height: 1rem;background: red;}
+    </style>
+    <script>
+        let html = document.documentElement;
+        let w = html.clientWidth;
+        let dpr = window.devicePixelRatio || 1;
+        let scale = 1/ dpr;
+        var metaEl = document.querySelector('meta[name="viewport"]');
+        //metaEl.setAttribute("content" , "width="+w+", inital-scale="+scale+",maximum-scale="+scale+",minimum-scale="+scale+",user-scalable=no")
+        html.style.fontSize = w/7.5+"px";
+    </script>
+</head>
+<body>
+    <div></div>
+</body>
+</html>
