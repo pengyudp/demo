@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body,html{padding:0;margin: 0;}
+        div{width: 100px;height: 100px;position: absolute;}
+        #box1{ background: red;}
+        #box2{ background: blue;left: 200px;}
+    </style>
+</head>
+<body>
+    <div id="box1"></div>
+    <div id="box2"></div>
+    <script>
+        class Drag{
+            constructor(id){
+                this.el = document.querySelector("#"+id);
+                this.startX = 0;
+                this.startY = 0;
+                this.downFn();
+            }
+
+            downFn(){
+                this.el.onmousedown = (e) => {
+                    e = e || windwo.event;
+                    let x = e.clientX;
+                    let y = e.clientY;
+                    this.startX = this.el.offsetLeft;
+                    this.startY = this.el.offsetTop;
+                    this.moveFn(x , y);
+                    this.upFn();
+                }
+            }
+
+            moveFn(x , y){
+                document.onmousemove = (e) => {
+                    e = e || window.event;
+                    e.preventDefault();
+                    this.el.style.top = e.clientY - y + this.startY +"px";
+                    this.el.style.left = e.clientX - x + this.startX + "px";
+                }
+            }
+
+            upFn(){
+                document.onmouseup = function(){
+                    document.onmousemove = null;
+                }
+            }
+        }
+
+        class LimitDrag extends Drag{
+            constructor(id){
+                super(id);
+            }
+
+            moveFn(x , y){
+                document.onmousemove = (e) => {
+                    e = e || window.event;
+                    e.preventDefault();
+                    let t = Math.max(0 , (e.clientY - y + this.startY));
+                    let l = Math.max(0 , (e.clientX - x + this.startX));
+                    console.log(window.innerWidth)
+                    t = Math.min(t , window.innerHeight - this.el.offsetHeight);
+                    l = Math.min(l , window.innerWidth - this.el.offsetWidth);
+                    this.el.style.top = t +"px";
+                    this.el.style.left = l + "px";
+                }
+            }
+        }
+
+        let drag1 = new Drag("box1");
+        let drag2 = new LimitDrag("box2");
+    </script>
+</body>
+</html>
