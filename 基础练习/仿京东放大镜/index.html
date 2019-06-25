@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <div id="box">
+      <div id="left">
+        <img src="images/img.png" id="imgs1" />
+        <div id="mask"></div>
+      </div>
+      <div id="right">
+        <div id="border">
+          <img src="images/img.png" id="img2" />
+        </div>
+      </div>
+    </div>
+    <script>
+      {
+        class Scale{
+          constructor(){
+            this.left = document.querySelector("#left");
+            this.right = document.querySelector("#right");
+            this.mask = document.querySelector("#mask");
+            this.img1 = document.querySelector("#imgs1");
+            this.img2 = document.querySelector("#img2");
+            this.border = document.querySelector("#border");
+            this.scaleW = 0;
+            this.scaleH = 0;
+            this.init();
+          }
+
+          init(){
+            this.right.style.display = "block";
+            this.mask.style.display = "block";
+            this.scaleW = this.img1.offsetWidth / this.img2.offsetWidth;
+            this.scaleH = this.img1.offsetHeight / this.img2.offsetHeight;
+            let maskH = this.scaleH*this.border.offsetWidth;
+            let maskW = this.scaleW*this.border.offsetWidth;
+            this.mask.style.width = maskW+"px";
+            this.mask.style.height = maskH+"px";
+            this.right.style.display = "none";
+            this.mask.style.display = "none";
+
+
+            this.left.addEventListener("mouseenter" , (e)=>{
+              e = e || window.event;
+              this.right.style.display = "block";
+              this.mask.style.display = "block";
+              
+            });
+            this.left.addEventListener("mouseleave" , ()=>{
+              this.right.style.display = "none";
+              this.mask.style.display = "none";
+            });
+
+            this.left.addEventListener("mousemove" , (e)=>{
+              let rect = left.getBoundingClientRect();
+              let t = e.clientY - rect.top - maskH/2;
+              let l = e.clientX - rect.left - maskW/2;
+              t = Math.max(0 , t);
+              l = Math.max(0 , l);
+              t = Math.min(t , left.offsetHeight-maskH);
+              l = Math.min(l , left.offsetWidth-maskW);
+              this.mask.style.top = t+"px";
+              this.mask.style.left = l+"px";
+              this.img2.style.top = -t / this.scaleH+"px"
+              this.img2.style.left = -l / this.scaleW+"px"
+            })
+          }
+
+        }
+
+        new Scale();
+      }
+    </script>
+  </body>
+</html>
