@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{width:100px;height:100px;}
+        .div1{background: red}
+        .div2{background: blue}
+    </style>
+</head>
+<body>
+    <div class="div1"></div>
+    <div class="div2"></div>
+    <script src="./mJquery.js"></script>
+    <script>
+        $("div").eq(0).click(function(){
+            alert(111);
+        });
+
+        $("div").eq(0).css("height" , 200)
+    </script>
+</body>
+</html>
