@@ -1,0 +1,102 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    script(src='./js/test.js')
+    title 文章信息展示
+    style.
+      body {
+      margin: 0;
+      }
+      ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      }
+      a {
+      text-decoration: none;
+      color: #404040;
+      }
+      .wrap{
+      width: 600px;
+      margin: 0 auto;
+      }
+      .news-list {
+      width: 600px;
+      }
+      .news {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      border-bottom: 1px solid #999;
+      }
+      .info {
+      display: flex;
+      width: 170px;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+      }
+      .tips {
+      display: flex;
+      width: 100px;
+      justify-content: space-between;
+      }
+      .news-list li:nth-child(5) {
+      border-bottom: none;
+      }
+      .pagination{
+      display: flex;
+      width: 210px;
+      text-align: center;
+      background-color: rgb(252, 238, 238);
+      border-radius: 25px;
+      overflow: hidden;
+      margin: 0 auto;
+      justify-content: center;
+      }
+      .pagination a{
+      width: 30px;
+      line-height: 30px;
+      color: #404040;
+      }
+      .pagination a:nth-child(1) {
+      transform: rotate(-45deg) ;
+      }
+      .next {
+      transform: rotate(45deg) ;
+      }
+      .pagination a:hover{
+      color: rgb(247, 73, 73);
+      }
+      .news div{
+      width:420px;
+      }
+  body
+    .wrap
+      ul.news-list
+      each d in data
+        li.news
+          a(href='javascript:;')
+            img(src=d.imgUrl, alt='')
+          div
+            h3
+              a(href='/detail?id='+d.id) #{d.title}
+            .info
+              span.tips
+                span #{d.type}
+                span #{d.country}
+                span #{d.type}
+              // <span class="line"></span>
+              span.time |   1小时前
+      .pagination
+        a.prev(href='javascript:;') ⌜
+        a(href='javascript:;') 1
+        a(href='javascript:;') 2
+        a(href='javascript:;') 3
+        a(href='javascript:;') 4
+        a(href='javascript:;') 5
+        a.next(href='javascript:;') ⌝
