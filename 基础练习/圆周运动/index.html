@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{ width: 10px;height: 10px;background:rgb(243, 145, 145);position: absolute;}
+    </style>
+</head>
+<body>
+    <div></div>
+    <script>
+        {
+            let x = 400;
+            let y = 400;
+            let r = 100;
+            let num = 0;
+            let timer = null;
+            let div = document.querySelector("div");
+            
+            timer = setInterval(function(){
+                num++;
+                if(num > 360){
+                    clearInterval(timer);
+                }else{
+                    let a = Math.sin(num*Math.PI / 180) * r;
+                    let b = Math.cos(num*Math.PI / 180) * r;
+                    div.style.left = x + b +"px";
+                    div.style.top = y + a + "px";
+                }
+            },1000/60);
+        }
+    </script>
+</body>
+</html>
